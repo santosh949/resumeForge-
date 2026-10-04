@@ -1,21 +1,28 @@
 {
-  "name": "resume-to-website",
+  "name": "resume-forge",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check": "npm run build"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^5.1.4",
+    "netlify-cli": "^27.1.0",
     "tailwindcss": "^4.2.1",
-    "vite": "^7.3.1"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "zod": "^4.4.3"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "canvas-confetti": "^1.9.4",
     "firebase": "^12.10.0",
     "pdfjs-dist": "^5.5.207",
     "react": "^19.1.0",

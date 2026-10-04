@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Match the portfolios collection
+    match /portfolios/{portfolioId} {
+      
+      // Anyone can read a portfolio (for public links)
+      allow read: if true;
+      
+      // Only authenticated users can create a portfolio
+      // and they MUST set their own uid as the 'userId' field
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      
+      // Only the owner can update or delete their portfolio
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+  }
+}

@@ -1,84 +1,129 @@
 # ResumeForge
 
-Turn a resume into a polished personal portfolio website with AI.
+Turn a PDF resume into a polished, customizable portfolio website with AI.
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://resume-to-portfolio-website.netlify.app/)
+[![Live app](https://img.shields.io/badge/Live_App-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://resume-to-portfolio-website.netlify.app/)
+[![CI](https://github.com/santosh949/resumeForge-/actions/workflows/ci.yml/badge.svg)](https://github.com/santosh949/resumeForge-/actions/workflows/ci.yml)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![Gemini](https://img.shields.io/badge/Google-Gemini_AI-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 
-## Overview
+## What it does
 
-ResumeForge is an AI-powered portfolio generator. It processes resume content and helps transform it into a clean, presentable portfolio experience without requiring the user to build a site manually.
+ResumeForge extracts content from an uploaded PDF resume, structures it with AI, and turns it into a hosted portfolio that can be edited, themed, previewed, and published from the browser.
 
-**Live application:** https://resume-to-portfolio-website.netlify.app/
+### Highlights
 
-## Core Stack
+- PDF text extraction with PDF.js
+- AI-assisted resume categorization and portfolio content
+- Firebase authentication and portfolio persistence
+- Editable education, experience, projects, skills, and profile sections
+- Recruiter-focused viewing mode
+- Multiple responsive portfolio themes and visual variants
+- Public portfolio publishing
+- AI assistant for portfolio and resume questions
 
-- **Frontend:** React 19, React Router, Vite
-- **Styling:** Tailwind CSS
-- **AI:** Google Gemini
-- **Resume processing:** PDF.js
-- **Platform services:** Firebase
-- **Deployment:** Netlify
+## Architecture
 
-## Key Capabilities
+```text
+PDF resume
+   │
+   ▼
+React + PDF.js ──► Netlify Functions ──► Groq / Gemini
+   │
+   ├──► Content editor and theme engine
+   │
+   └──► Firebase Auth + Firestore ──► Published portfolio
+```
 
-- Resume upload and PDF processing
-- AI-assisted conversion of resume information into portfolio content
-- Multiple visual templates and typography options
-- Portfolio preview and publishing workflow
-- Responsive browser-based experience
+The AI credentials are used only by Netlify Functions. They must not be exposed through `VITE_` variables or committed to the repository.
 
-## Local Development
+## Technology
 
-### Prerequisites
+| Area | Tools |
+| --- | --- |
+| Frontend | React 19, TypeScript, React Router, Vite |
+| Styling | Tailwind CSS 4, custom theme engine |
+| Resume processing | PDF.js, Zod |
+| AI | Groq, Google Gemini |
+| Platform | Firebase Authentication, Firestore |
+| Serverless API | Netlify Functions |
+| Deployment | Netlify |
 
-- Node.js 20 or newer
+## Run locally
+
+### Requirements
+
+- Node.js 20+
 - npm
-- Firebase project configuration
-- Google Gemini API access
-
-### Installation
+- A Firebase web application
+- A Groq and/or Gemini API key
 
 ```bash
 git clone https://github.com/santosh949/resumeForge-.git
 cd resumeForge-
-npm install
+npm ci
+cp .env.example .env
 npm run dev
 ```
 
-The development server will print the local URL in the terminal.
+Fill `.env` with your own configuration:
 
-### Production Build
+```env
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+VITE_FIREBASE_MEASUREMENT_ID=
+
+GROQ_API_KEY=
+GEMINI_API_KEY=
+```
+
+For the full AI workflow, run through Netlify Dev so the serverless functions and environment variables are available:
 
 ```bash
-npm run build
+npx netlify dev
+```
+
+## Validate a production build
+
+```bash
+npm run check
 npm run preview
 ```
 
-## Project Structure
+## Project layout
 
 ```text
-resumeForge-/
-├── src/                 # React application source
-├── index.html           # Vite entry document
-├── package.json         # Scripts and dependencies
-└── vite.config.js       # Vite configuration
+src/
+├── components/     Reusable editor and portfolio UI
+├── config/         Firebase client configuration
+├── context/        Authentication and theme state
+├── pages/          Application routes and workflows
+├── schemas/        Resume validation and defaults
+├── services/       PDF, AI, storage, and analytics services
+└── templates/      Portfolio renderer, themes, and variants
+
+netlify/functions/  Server-side AI endpoints
+firestore.rules     Firestore access rules
+netlify.toml        Build and SPA routing configuration
 ```
 
-## Security Notes
+## Security
 
-- Never commit private API keys or Firebase service-account credentials.
-- Keep environment-specific configuration outside source control.
-- Restrict Gemini and Firebase credentials to the minimum permissions and permitted origins required by the application.
+- `.env`, Netlify local state, build output, and dependencies are ignored.
+- Keep Groq and Gemini keys in Netlify environment variables.
+- Firebase client configuration is public by design; enforce access through Firestore rules and authorized domains.
+- Rotate any credential that has previously been committed or shared.
 
 ## Roadmap
 
 - Add product screenshots and an animated walkthrough
-- Expand portfolio templates
-- Improve resume parsing and error handling
-- Add automated tests and CI
-- Add export and custom-domain guidance
+- Add automated component and integration tests
+- Improve bundle code splitting
+- Expand accessibility and keyboard testing
+- Add portfolio export and custom-domain guidance
 
 ## Author
 
